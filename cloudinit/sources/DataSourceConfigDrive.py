@@ -14,6 +14,8 @@ from cloudinit import util
 
 from cloudinit.net import eni
 
+from cloudinit.event import EventType
+
 from cloudinit.sources.DataSourceIBMCloud import get_ibm_platform
 from cloudinit.sources.helpers import openstack
 
@@ -38,6 +40,7 @@ class DataSourceConfigDrive(openstack.SourceMixin, sources.DataSource):
 
     def __init__(self, sys_cfg, distro, paths):
         super(DataSourceConfigDrive, self).__init__(sys_cfg, distro, paths)
+        self.update_events['network'].add(EventType.BOOT)
         self.source = None
         self.seed_dir = os.path.join(paths.seed_dir, 'config_drive')
         self.version = None
